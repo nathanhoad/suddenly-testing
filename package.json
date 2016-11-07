@@ -1,6 +1,6 @@
 {
   "name": "suddenly-testing",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Test helpers for Suddenly apps",
   "main": "index.js",
   "scripts": {
