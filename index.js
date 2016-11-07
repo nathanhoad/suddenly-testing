@@ -11,7 +11,7 @@ const KnexCleaner = require('knex-cleaner');
 // Mock out `require()` to fake CSS and images
 var originalLoader = Module._load;
 function mockedLoader (path, parent, is_main) {
-    if (path.match(/\.(png|jpg|jpeg|gif)$/)) {
+    if (path.match(/\.(png|jpg|jpeg|gif|mp4|m4v|flv)$/)) {
         return {};
     }
     
