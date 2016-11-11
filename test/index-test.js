@@ -33,4 +33,21 @@ lab.experiment('Testing:', () => {
             done();
         });
     });
+    
+    
+    lab.suite('mockDom', () => {
+        lab.test('can mock out a global DOM', (done) => {
+            expect(global.document).to.be.undefined();
+            
+            Testing.mockDom();
+            
+            expect(global.document).to.not.be.undefined();
+            
+            Testing.unmockDom();
+            
+            expect(global.document).to.be.undefined();
+            
+            done();
+        });
+    });
 });

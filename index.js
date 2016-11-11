@@ -30,6 +30,8 @@ function mockedLoader (path, parent, is_main) {
 const Testing = {
     _mockedAssets: false,
     
+    _mockedGlobals: [],
+    
     
     emptyDatabase (knex) {
         return KnexCleaner.clean(knex, { ignoreTables: ['schema_migrations', 'schema_migrations_lock'] });
@@ -38,6 +40,37 @@ const Testing = {
     
     mockStore (state) {
         return mockStore(state);
+    },
+    
+    
+    mockDom () {
+        const jsdom = require('jsdom').jsdom;
+
+        global.document = jsdom('');
+        global.window = document.defaultView;
+
+        Testing.mockedGlobals = [];
+        Object.keys(document.defaultView).forEach((property) => {
+            if (typeof global[property] === 'undefined') {
+                global[property] = document.defaultView[property];
+                Testing.mockedGlobals.push(property);
+            }
+        });
+
+        global.navigator = {
+            userAgent: 'node.js'
+        };
+    },
+    
+    
+    unmockDom () {
+        Testing.mockedGlobals.forEach((property) => {
+            delete global[property];
+        });
+        
+        delete global['document'];
+        delete global['window'];
+        delete global['navigator'];
     },
     
     
