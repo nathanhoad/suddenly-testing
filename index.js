@@ -3,6 +3,7 @@ const Module = require('module');
 const configureStore = require('redux-mock-store').default;
 const Thunk = require('redux-thunk').default;
 const mockStore = configureStore([Thunk]);
+const jsdom = require('jsdom').jsdom;
 
 const Gimmea = require('gimmea');
 const KnexCleaner = require('knex-cleaner');
@@ -29,8 +30,7 @@ function mockedLoader (path, parent, is_main) {
     
 const Testing = {
     _mockedAssets: false,
-    
-    _mockedGlobals: [],
+    _mockedDom: false,
     
     
     emptyDatabase (knex) {
@@ -44,33 +44,22 @@ const Testing = {
     
     
     mockDom () {
-        const jsdom = require('jsdom').jsdom;
-
+        if (Testing._mockedDom) return;
+        
         global.document = jsdom('');
         global.window = document.defaultView;
-
-        Testing.mockedGlobals = [];
-        Object.keys(document.defaultView).forEach((property) => {
-            if (typeof global[property] === 'undefined') {
-                global[property] = document.defaultView[property];
-                Testing.mockedGlobals.push(property);
-            }
-        });
-
-        global.navigator = {
-            userAgent: 'node.js'
-        };
+        
+        Testing._mockedDom = true;
     },
     
     
     unmockDom () {
-        Testing.mockedGlobals.forEach((property) => {
-            delete global[property];
-        });
+        if (!Testing._mockedDom) return;
         
         delete global['document'];
         delete global['window'];
-        delete global['navigator'];
+        
+        Testing._mockedDom = false;
     },
     
     
