@@ -49,5 +49,18 @@ lab.experiment('Testing:', () => {
             
             done();
         });
+        
+        
+        lab.test('can mock a document.location structure', (done) => {
+            Testing.mockDom('http://localhost:5000');
+            
+            expect(global.document).to.not.be.undefined();
+            expect(global.document.location).to.not.be.undefined();
+            expect(global.document.location.scheme).to.equal('http:');
+            expect(global.document.location.hostname).to.equal('localhost');
+            expect(global.document.location.port).to.equal('5000');
+            
+            done();
+        });
     });
 });

@@ -3,7 +3,7 @@ const Module = require('module');
 const configureStore = require('redux-mock-store').default;
 const Thunk = require('redux-thunk').default;
 const mockStore = configureStore([Thunk]);
-const jsdom = require('jsdom').jsdom;
+const jsdom = require('jsdom');
 
 const Gimmea = require('gimmea');
 const KnexCleaner = require('knex-cleaner');
@@ -43,11 +43,23 @@ const Testing = {
     },
     
     
-    mockDom () {
+    mockDom (url) {
         if (Testing._mockedDom) return;
         
-        global.document = jsdom('');
-        global.window = document.defaultView;
+        url = url || 'http://example.com';
+        
+        var document = jsdom.jsdom('');
+        var window = document.defaultView;
+        
+        // Set up the document.location bits
+        jsdom.changeURL(window, url);
+        var url_bits = url.match(/^(https?\:)\/\/([^\:\/])+(\:\d+)?/);
+        document.location.scheme = url_bits[1];
+        document.location.hostname = url_bits[2];
+        document.location.port = url_bits[3] || '';
+        
+        global.document = document;
+        global.window = window;
         
         Testing._mockedDom = true;
     },
