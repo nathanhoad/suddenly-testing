@@ -60,6 +60,9 @@ const Testing = {
         
         global.document = document;
         global.window = window;
+        global.navigator = {
+            userAgent: 'node.js'
+        };
         
         Testing._mockedDom = true;
     },

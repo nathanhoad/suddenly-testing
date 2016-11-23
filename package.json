@@ -4,7 +4,7 @@
   "description": "Test helpers for Suddenly apps",
   "main": "index.js",
   "scripts": {
-    "lab": "NODE_ENV=test node node_modules/.bin/lab --pattern \"\\-test\" --ignore __core-js_shared__,document,window -T node_modules/lab-babel --sourcemaps",
+    "lab": "NODE_ENV=test node node_modules/.bin/lab --pattern \"\\-test\" --ignore __core-js_shared__,document,window,navigator -T node_modules/lab-babel --sourcemaps",
     "test": "npm run lab test"
   },
   "keywords": [
